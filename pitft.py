@@ -1,3 +1,9 @@
+import os
+import syslog
+import pygame
+import time
+import pywapi
+
 class PiTFT:
     screen = None;
     colourBlack = (0, 0, 0)

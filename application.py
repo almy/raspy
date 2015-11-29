@@ -1,9 +1,9 @@
-import os, syslog
+import os
 import pygame
 import time
 import pywapi
 from pitft import PiTFT
- 
+
 # Weather Icons used with the following permissions:
 #
 # VClouds Weather Icons
@@ -16,24 +16,25 @@ from pitft import PiTFT
 # if you want to buy the icons for commercial use please send me a note - http://vclouds.deviantart.com/ ***
 print os.getcwd()
 installPath = "images/"
- 
+
 # location for Lincoln, UK on weather.com
 weatherDotComLocationCode = 'HKXX0049'
 # convert mph = kpd / kphToMph
 kphToMph = 1.60934400061
- 
+
 # font colours
-colourWhite = (255, 255, 255)
-colourBlack = (0, 0, 0)
- 
+colourBlack = (255, 255, 255)
+colourWhite = (0, 0, 0)
+
+
 # update interval
 updateRate = 60  # seconds
 
 # Create an instance of the PyScope class
 mytft = PiTFT()
- 
+
 pygame.mouse.set_visible(False)
- 
+
 # set up the fonts
 # choose the font
 fontpath = pygame.font.match_font('dejavusansmono')
@@ -45,9 +46,8 @@ fontSm = pygame.font.Font(fontpath, 18)
 def main():
             while True:
                 # retrieve data from weather.com
-                #locationCode = pywapi.get_location_ids( 'Cape Town' )
                 weather_com_result = pywapi.get_weather_from_weather_com(weatherDotComLocationCode)
- 
+
                 # extract current data for today
                 today = weather_com_result['forecasts'][0]['day_of_week'][0:3] + " " \
                     + weather_com_result['forecasts'][0]['date'][4:] + " " \
@@ -59,22 +59,22 @@ def main():
                 uv = "UV {}".format(weather_com_result['current_conditions']['uv']['text'])
                 humid = "Hum {}%".format(weather_com_result['current_conditions']['humidity'])
                 city = weather_com_result['location']['name']
- 
+
                 # extract forecast data
                 forecastDays = {}
                 forecaseHighs = {}
                 forecaseLows = {}
                 forecastPrecips = {}
                 forecastWinds = {}
- 
+
                 start = 0
                 try:
                     test = float(weather_com_result['forecasts'][0]['day']['wind']['speed'])
                 except ValueError:
                     start = 1
- 
+
                 for i in range(start, 5):
- 
+
                     if not(weather_com_result['forecasts'][i]):
                         break
                     forecastDays[i] = weather_com_result['forecasts'][i]['day_of_week'][0:3]
@@ -83,70 +83,70 @@ def main():
                     forecastPrecips[i] = weather_com_result['forecasts'][i]['day']['chance_precip'] + "%"
                     forecastWinds[i] = "{:.0f}".format(int(weather_com_result['forecasts'][i]['day']['wind']['speed'])  / kphToMph) + \
                         weather_com_result['forecasts'][i]['day']['wind']['text']
- 
+
                 # blank the screen
                 mytft.screen.fill(colourBlack)
- 
+
                 # Render the weather logo at 0,0
                 icon = installPath + (weather_com_result['current_conditions']['icon']) + ".png"
                 logo = pygame.image.load(icon).convert()
                 mytft.screen.blit(logo, (0, 0))
- 
+
                 # set the anchor for the current weather data text
                 textAnchorX = 140
-                textAnchorY = 5
+                textanchory = 5
                 textYoffset = 20
- 
+
                 # add current weather data text artifacts to the screen
                 text_surface = font.render(city, True, colourWhite)
-                mytft.screen.blit(text_surface, (textAnchorX, textAnchorY))
-                textAnchorY+=textYoffset
+                mytft.screen.blit(text_surface, (textAnchorX, textanchory))
+                textanchory+=textYoffset
                 text_surface = font.render(today, True, colourWhite)
-                mytft.screen.blit(text_surface, (textAnchorX, textAnchorY))
-                textAnchorY+=textYoffset
+                mytft.screen.blit(text_surface, (textAnchorX, textanchory))
+                textanchory+=textYoffset
                 text_surface = font.render(currTemp, True, colourWhite)
-                mytft.screen.blit(text_surface, (textAnchorX, textAnchorY))
-                textAnchorY+=textYoffset
+                mytft.screen.blit(text_surface, (textAnchorX, textanchory))
+                textanchory+=textYoffset
                 text_surface = font.render(currWind, True, colourWhite)
-                mytft.screen.blit(text_surface, (textAnchorX, textAnchorY))
-                textAnchorY+=textYoffset
+                mytft.screen.blit(text_surface, (textAnchorX, textanchory))
+                textanchory+=textYoffset
                 # text_surface = font.render(currPress, True, colourWhite)
                 # mytft.screen.blit(text_surface, (textAnchorX, textAnchorY))
                 # textAnchorY+=textYoffset
                 text_surface = font.render(uv, True, colourWhite)
-                mytft.screen.blit(text_surface, (textAnchorX, textAnchorY))
-                textAnchorY+=textYoffset
+                mytft.screen.blit(text_surface, (textAnchorX, textanchory))
+                textanchory+=textYoffset
                 text_surface = font.render(humid, True, colourWhite)
-                mytft.screen.blit(text_surface, (textAnchorX, textAnchorY))
- 
+                mytft.screen.blit(text_surface, (textAnchorX, textanchory))
+
                 # set X axis text anchor for the forecast text
                 textAnchorX = 0
                 textXoffset = 65
- 
+
                 # add each days forecast text
                 for i in forecastDays:
-                    textAnchorY = 130
+                    textanchory = 130
                     text_surface = fontSm.render(forecastDays[int(i)], True, colourWhite)
-                    mytft.screen.blit(text_surface, (textAnchorX, textAnchorY))
-                    textAnchorY+=textYoffset
+                    mytft.screen.blit(text_surface, (textAnchorX, textanchory))
+                    textanchory+=textYoffset
                     text_surface = fontSm.render(forecaseHighs[int(i)], True, colourWhite)
-                    mytft.screen.blit(text_surface, (textAnchorX, textAnchorY))
-                    textAnchorY+=textYoffset
+                    mytft.screen.blit(text_surface, (textAnchorX, textanchory))
+                    textanchory+=textYoffset
                     text_surface = fontSm.render(forecaseLows[int(i)], True, colourWhite)
-                    mytft.screen.blit(text_surface, (textAnchorX, textAnchorY))
-                    textAnchorY+=textYoffset
+                    mytft.screen.blit(text_surface, (textAnchorX, textanchory))
+                    textanchory+=textYoffset
                     text_surface = fontSm.render(forecastPrecips[int(i)], True, colourWhite)
-                    mytft.screen.blit(text_surface, (textAnchorX, textAnchorY))
-                    textAnchorY+=textYoffset
+                    mytft.screen.blit(text_surface, (textAnchorX, textanchory))
+                    textanchory+=textYoffset
                     text_surface = fontSm.render(forecastWinds[int(i)], True, colourWhite)
-                    mytft.screen.blit(text_surface, (textAnchorX, textAnchorY))
+                    mytft.screen.blit(text_surface, (textAnchorX, textanchory))
                     textAnchorX+=textXoffset
- 
+
                 # refresh the screen with all the changes
                 pygame.display.update()
- 
+
                 # Wait
                 time.sleep(updateRate)
-    
+
 if __name__ == '__main__':
     main()
