@@ -123,11 +123,11 @@ def main():
 
                 # set X axis text anchor for the forecast text
                 textAnchorX = 0
-                textXoffset = 65
+                textXoffset = 85
 
                 # add each days forecast text
                 for data in weather.weather.forecastmodel:
-                    textanchory = 100
+                    textanchory = 130
                     text_surface = fontSm.render(data.start_time.strftime("%H:%M") + " - " + data.end_time.strftime("%H:%M"), True, colourWhite)
                     mytft.screen.blit(text_surface, (textAnchorX, textanchory))
                     textanchory+=textYoffset
