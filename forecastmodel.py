@@ -13,5 +13,3 @@ class ForeceastModel:
     start_time = None
     end_time = None
     period_time = None
-    icon_nr = None
-    weather_description = None

@@ -55,8 +55,7 @@ class YR:
                 forecastModel.start_time = dateutil.parser.parse(forecast.attrib["from"]).time()
                 forecastModel.end_time = dateutil.parser.parse(forecast.attrib["to"]).time()
                 forecastModel.period_time = forecast.attrib["period"]
-                forecastModel.icon_nr = forecast.find("symbol").attrib["number"]
-                forecastModel.weather_description = forecast.find("symbol").attrib["name"]
+                forecastModel.weather_symbol = forecast.find("symbol").attrib
                 forecastModel.precipitation = forecast.find("precipitation").attrib
                 forecastModel.temperature = forecast.find("temperature").attrib
                 forecastModel.pressure = forecast.find("pressure").attrib

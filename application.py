@@ -40,8 +40,8 @@ pygame.mouse.set_visible(False)
 # choose the font
 fontpath = pygame.font.match_font('dejavusansmono')
 # set up 2 sizes
-font = pygame.font.Font(fontpath, 20)
-fontSm = pygame.font.Font(fontpath, 18)
+font = pygame.font.Font(fontpath, 18)
+fontSm = pygame.font.Font(fontpath, 16)
 
 
 def main():
@@ -127,10 +127,11 @@ def main():
 
                 # add each days forecast text
                 for data in weather.weather.forecastmodel:
-                    textanchory = 130
-                    text_surface = fontSm.render(data.start_time + " - " + data.end_time, True, colourWhite)
+                    textanchory = 100
+                    text_surface = fontSm.render(data.start_time.strftime("%H:%M") + " - " + data.end_time.strftime("%H:%M"), True, colourWhite)
                     mytft.screen.blit(text_surface, (textAnchorX, textanchory))
                     textanchory+=textYoffset
+                    print data.start_time.strftime("%H:%M") + " - " + data.end_time.strftime("%H:%M")
                     # text_surface = fontSm.render(forecaseHighs[int(i)], True, colourWhite)
                     # mytft.screen.blit(text_surface, (textAnchorX, textanchory))
                     # textanchory+=textYoffset
@@ -142,7 +143,7 @@ def main():
                     # textanchory+=textYoffset
                     # text_surface = fontSm.render(forecastWinds[int(i)], True, colourWhite)
                     # mytft.screen.blit(text_surface, (textAnchorX, textanchory))
-                    # textAnchorX+=textXoffset
+                    textAnchorX+=textXoffset
 
                 # refresh the screen with all the changes
                 pygame.display.update()
