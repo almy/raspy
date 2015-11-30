@@ -3,6 +3,7 @@ import pygame
 import time
 import pywapi
 from pitft import PiTFT
+from pynrk import YR
 
 # Weather Icons used with the following permissions:
 #
@@ -23,8 +24,8 @@ weatherDotComLocationCode = 'HKXX0049'
 kphToMph = 1.60934400061
 
 # font colours
-colourBlack = (255, 255, 255)
-colourWhite = (0, 0, 0)
+colourWhite = (255, 255, 255)
+colourBlack = (0, 0, 0)
 
 
 # update interval
@@ -47,6 +48,7 @@ def main():
             while True:
                 # retrieve data from weather.com
                 weather_com_result = pywapi.get_weather_from_weather_com(weatherDotComLocationCode)
+                weather = YR("Sweden/Stockholm/Stockholm/", "2015-12-01")
 
                 # extract current data for today
                 today = weather_com_result['forecasts'][0]['day_of_week'][0:3] + " " \
@@ -124,24 +126,11 @@ def main():
                 textXoffset = 65
 
                 # add each days forecast text
-                for i in forecastDays:
+                for data in weather.weather.forecastmodel:
                     textanchory = 130
-                    text_surface = fontSm.render(forecastDays[int(i)], True, colourWhite)
+                    text_surface = fontSm.render(data.start_time, True, colourWhite)
                     mytft.screen.blit(text_surface, (textAnchorX, textanchory))
                     textanchory+=textYoffset
-                    text_surface = fontSm.render(forecaseHighs[int(i)], True, colourWhite)
-                    mytft.screen.blit(text_surface, (textAnchorX, textanchory))
-                    textanchory+=textYoffset
-                    text_surface = fontSm.render(forecaseLows[int(i)], True, colourWhite)
-                    mytft.screen.blit(text_surface, (textAnchorX, textanchory))
-                    textanchory+=textYoffset
-                    text_surface = fontSm.render(forecastPrecips[int(i)], True, colourWhite)
-                    mytft.screen.blit(text_surface, (textAnchorX, textanchory))
-                    textanchory+=textYoffset
-                    text_surface = fontSm.render(forecastWinds[int(i)], True, colourWhite)
-                    mytft.screen.blit(text_surface, (textAnchorX, textanchory))
-                    textAnchorX+=textXoffset
-
                 # refresh the screen with all the changes
                 pygame.display.update()
 
