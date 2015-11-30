@@ -52,8 +52,8 @@ class YR:
             fixedDate = dateutil.parser.parse(date).date()
             if startDate == fixedDate:
                 forecastModel = ForeceastModel()
-                forecastModel.start_time = forecast.attrib["from"]
-                forecastModel.end_time = forecast.attrib["to"]
+                forecastModel.start_time = dateutil.parser.parse(forecast.attrib["from"]).time()
+                forecastModel.end_time = dateutil.parser.parse(forecast.attrib["to"]).time()
                 forecastModel.period_time = forecast.attrib["period"]
                 forecastModel.icon_nr = forecast.find("symbol").attrib["number"]
                 forecastModel.weather_description = forecast.find("symbol").attrib["name"]

@@ -128,9 +128,22 @@ def main():
                 # add each days forecast text
                 for data in weather.weather.forecastmodel:
                     textanchory = 130
-                    text_surface = fontSm.render(data.start_time, True, colourWhite)
+                    text_surface = fontSm.render(data.start_time + " - " + data.end_time, True, colourWhite)
                     mytft.screen.blit(text_surface, (textAnchorX, textanchory))
                     textanchory+=textYoffset
+                    # text_surface = fontSm.render(forecaseHighs[int(i)], True, colourWhite)
+                    # mytft.screen.blit(text_surface, (textAnchorX, textanchory))
+                    # textanchory+=textYoffset
+                    # text_surface = fontSm.render(forecaseLows[int(i)], True, colourWhite)
+                    # mytft.screen.blit(text_surface, (textAnchorX, textanchory))
+                    # textanchory+=textYoffset
+                    # text_surface = fontSm.render(forecastPrecips[int(i)], True, colourWhite)
+                    # mytft.screen.blit(text_surface, (textAnchorX, textanchory))
+                    # textanchory+=textYoffset
+                    # text_surface = fontSm.render(forecastWinds[int(i)], True, colourWhite)
+                    # mytft.screen.blit(text_surface, (textAnchorX, textanchory))
+                    # textAnchorX+=textXoffset
+
                 # refresh the screen with all the changes
                 pygame.display.update()
 
