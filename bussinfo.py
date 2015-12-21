@@ -19,67 +19,6 @@ class NextBusChecker(threading.Thread):
         return yaml.safe_load(open("config.yaml"))
 
     def get_data_from_api(self):
-        """
-        Gets data from Trafiklab Api
-
-        Api call format:
-        https://api.sl.se/api2/realtimedepartures.json?key=<TRAFIKLAB_API_KEY>&siteid=<SITEID>&timewindow=<TIMEWINDOW>
-        SITEID for Ekensberg is 1600 (2015-02-07)
-        TIMEWINDOW is integer for minutes from now, max is 60.
-
-        Api call for Ekensberg for 60 minutes:
-        https://api.sl.se/api2/realtimedepartures.json?key=<TRAFIKLAB_API_KEY>&siteid=1600&timewindow=60
-
-        Example response:
-        {
-            "StatusCode": 0,
-            "Message": null,
-            "ExecutionTime": 50,
-            "ResponseData": {
-                "LatestUpdate": "2015-02-07T22:35:44",
-                "DataAge": 15,
-                "Metros": [],
-                "Buses": [
-                    {
-                        "JourneyDirection": 2,
-                        "GroupOfLine": null,
-                        "StopAreaName": "Ekensberg",
-                        "StopAreaNumber": 14066,
-                        "StopPointNumber": 14066,
-                        "StopPointDesignation": null,
-                        "TimeTabledDateTime": "2015-02-07T23:00:00",
-                        "ExpectedDateTime": "2015-02-07T23:00:00",
-                        "DisplayTime": "24 min",
-                        "Deviations": null,
-                        "TransportMode": "BUS",
-                        "LineNumber": "133",
-                        "Destination": "Liljeholmen",
-                        "SiteId": 1600
-                    },
-                    {
-                        "JourneyDirection": 2,
-                        "GroupOfLine": null,
-                        "StopAreaName": "Ekensberg",
-                        "StopAreaNumber": 14066,
-                        "StopPointNumber": 14066,
-                        "StopPointDesignation": null,
-                        "TimeTabledDateTime": "2015-02-07T23:30:00",
-                        "ExpectedDateTime": "2015-02-07T23:30:00",
-                        "DisplayTime": "23:30",
-                        "Deviations": null,
-                        "TransportMode": "BUS",
-                        "LineNumber": "133",
-                        "Destination": "Liljeholmen",
-                        "SiteId": 1600
-                    }
-                ],
-                "Trains": [],
-                "Trams": [],
-                "Ships": [],
-                "StopPointDeviations": []
-            }
-        }
-        """
 
         config_data = self.get_config_entries()
 
@@ -183,7 +122,7 @@ class NextBusChecker(threading.Thread):
         busInfo.error_with_data = self.error_with_data
 
         self.get_bus_data()
-        #self.busInfoQueue.put(busInfo)
+        self.busInfoQueue.put(busInfo)
 
         self.print_next_bus()
 

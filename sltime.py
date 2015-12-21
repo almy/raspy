@@ -16,8 +16,7 @@ class NextBusVisualization:
 
     def start(self):
 
-        # Weather
-        weather = YR("Sweden/Stockholm/Stockholm/", "2015-12-01")
+
 
         # Start Tkinter
         self.root = Tk()
@@ -74,6 +73,8 @@ class NextBusVisualization:
 
 if __name__ == "__main__":
     busInfoQueue = Queue.Queue()
+    weatherInfoQueue = Queue.Queue()
+    weather = YR("Sweden/Stockholm/Stockholm/", "2015-12-21", weatherInfoQueue)
     next_bus_checker = NextBusChecker(busInfoQueue)
     next_bus_checker.daemon = True
     next_bus_checker.start()

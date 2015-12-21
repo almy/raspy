@@ -1,22 +1,17 @@
 __author__ = 'user'
 
 import urllib2
+import threading
 from xml.etree import ElementTree
 from weathermodel import WeatherModel
 from forecastmodel import ForeceastModel
 import dateutil.parser
 
-# Public: A class that gets the weather data from yr.no based on a geoname
-#
-# geoname - the geoname string separated with "/". e.g.
-# "Finland/Western_Finland/Turku"
-#
-# Examples
-#
-# 	weather = yr("Finland/Western_Finland/Turku")
-class YR:
 
-    def __init__(self, geoname, date, fetch=True):
+class YR(threading.Thread):
+
+    def __init__(self, geoname, date, weeatherInfoQue, fetch=True, ):
+        super(YR, self).__init__()
         yr_base_url = "http://www.yr.no/place/"
         yr_end_url  = "/forecast.xml"
 
@@ -63,3 +58,7 @@ class YR:
                 forecastModel.wind_speed = forecast.find("windSpeed").attrib
                 weathermodel.forecastmodel.append(forecastModel)
         return weathermodel
+
+    def run(self):
+        while True:
+            # tick every secon
