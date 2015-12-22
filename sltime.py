@@ -6,17 +6,16 @@ from pynrk import YR
 
 
 class NextBusVisualization:
-    def __init__(self, busInfoQueue):
+    def __init__(self, busInfoQueue, weatherInfoQueue):
         self.root = None
         self.canvas = None
         self.busInfo = None
         self.busInfoQueue = busInfoQueue
+        self.weatherInfoQueue = weatherInfoQueue
         self.nextBusLabel = None
         self.isBlinking = False
 
     def start(self):
-
-
 
         # Start Tkinter
         self.root = Tk()
@@ -72,11 +71,22 @@ class NextBusVisualization:
 
 
 if __name__ == "__main__":
+    # Queue initialisation
     busInfoQueue = Queue.Queue()
     weatherInfoQueue = Queue.Queue()
-    weather = YR("Sweden/Stockholm/Stockholm/", "2015-12-21", weatherInfoQueue)
+
+
+    # Weather object initialisation
+    today = time.strftime("%Y-%m-%d")
+    weather = YR("Sweden/Stockholm/Stockholm/", today, weatherInfoQueue)
+    weather.daemon = True
+    weather.start()
+
+    # Buss object initialisation
     next_bus_checker = NextBusChecker(busInfoQueue)
     next_bus_checker.daemon = True
     next_bus_checker.start()
-    nextBusVisualization = NextBusVisualization(busInfoQueue)
+
+    # Consumer initialisation
+    nextBusVisualization = NextBusVisualization(busInfoQueue, weatherInfoQueue)
     nextBusVisualization.start()
